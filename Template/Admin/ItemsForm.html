@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+         :root {
+            
+            --primary-color: #6c5ce7;
+                --secondary-color: #764ba2;
+                --background-color: #f0f2f5;
+                --card-color: rgba(255, 255, 255, 0.9);
+                --text-color: #2d3436;
+                --error-color: #e74c3c;
+                --success-color: #00b894;
+                --border-radius: 15px;
+                --shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+        body {
+            font-family: Arial, sans-serif;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            height: 100vh;
+            margin: 0;
+            width: 100%;
+            
+        }
+
+        form {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+          
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+            border: 1px solid var(--text-color);
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .submit-btn {
+            background-color: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #667eea;
+        }
+
+        /* Style for Django form errors */
+        .errorlist {
+            color: #dc3545;
+            list-style: none;
+            padding: 0;
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        .sidebar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px;
+            height: 100%;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .nav-item {
+            padding: 12px 15px;
+            margin: 5px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s;
+            color: #f0f2f5;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .form-container{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            
+            overflow-y: scroll;
+        }
+        .links{
+            display: flex;
+            flex-direction: column;
+        }
+        .active{
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+            
+        
+            .add-food-container {
+                width: calc(100% - 240px);
+                
+                padding: 2.5rem;
+                background: var(--background-color);
+                border-radius: var(--border-radius);
+                box-shadow: var(--shadow);
+            }
+        
+            .form-header {
+                text-align: center;
+                margin-bottom: 3rem;
+            }
+        
+            .form-header h2 {
+                color: var(--primary-color);
+                font-size: 2.5rem;
+                font-weight: 700;
+                margin-bottom: 1.5rem;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+        
+            .field-label {
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: var(--primary-color);
+                margin-bottom: 1rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+        
+            .glass-effect {
+                background: rgba(255, 255, 255, 0.25);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                border-radius: var(--border-radius);
+            }
+        
+            .input-wrapper {
+                position: relative;
+                margin-bottom: 1.5rem;
+                transition: transform 0.3s ease;
+            }
+        
+            .input-wrapper:hover {
+                transform: translateY(-2px);
+            }
+        
+            input[type="text"],
+            input[type="number"],
+            select {
+                width: 100%;
+                padding: 1rem 3rem;
+                
+            border: 1px solid var(--text-color);
+
+                border-radius: var(--border-radius);
+                font-size: 1rem;
+                background: rgba(255, 255, 255, 0.9);
+                transition: all 0.3s ease;
+            }
+        
+            input:focus,
+            select:focus {
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1);
+                outline: none;
+            }
+        
+            .field-icon {
+                position: absolute;
+                left: 1rem;
+                top: 50%;
+                transform: translateY(-50%);
+                color: var(--primary-color);
+                font-size: 1.2rem;
+            }
+        
+            .unit {
+                position: absolute;
+                right: 1rem;
+                top: 50%;
+                transform: translateY(-50%);
+                color: var(--text-color);
+                font-weight: 600;
+            }
+        
+            .upload-area {
+                border: 2px dashed var(--primary-color);
+                border-radius: var(--border-radius);
+                padding: 3rem;
+                text-align: center;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                background: rgba(255, 255, 255, 0.5);
+            }
+        
+            .upload-area:hover {
+                background: rgba(108, 92, 231, 0.05);
+                transform: translateY(-2px);
+            }
+        
+            .help-text {
+                font-size: 0.9rem;
+                color: var(--text-color);
+                margin-top: 0.5rem;
+                font-style: italic;
+            }
+        
+        
+        
+            .form-navigation {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 3rem;
+                gap: 1rem;
+            }
+        
+            .nav-btn,
+            .submit-btn {
+                padding: 1rem 2rem;
+                border-radius: var(--border-radius);
+                border: none;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+        
+            .nav-btn {
+                background: var(--secondary-color);
+                color: white;
+            }
+        
+            .submit-btn {
+                background: var(--primary-color);
+                color: white;
+            }
+        
+            .nav-btn:hover,
+            .submit-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            }
+        
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+        
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        
+            .form-card.active {
+                animation: slideIn 0.5s ease;
+            }
+        
+            @media (max-width: 768px) {
+                .add-food-container {
+                    margin: 1rem;
+                    padding: 1.5rem;
+                }
+        
+                .form-header h2 {
+                    font-size: 2rem;
+                }
+        
+                .nav-btn,
+                .submit-btn {
+                    padding: 0.8rem 1.5rem;
+                }
+            }
+            a{
+            text-decoration: none;
+            color: #f0f2f5;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <a href="{% url 'AdminDashboard' %}"><h2>Admin Dashboard</h2></a>
+        <div class="links">
+            <a href="{% url 'CityTrans' %} " class="nav-item">Add City</a>
+            <a href="{% url 'AreaTrans' %}" class="nav-item">Add Area</a>
+            <a href="{% url 'FoodItemShopTrans' %}" class="nav-item">Add Food Items For Shop</a>
+            <a href="{% url 'ShopTrans' %}" class="nav-item">Add Shop</a>
+            <a href="{% url 'ItemFrom' %}" class="nav-item">Enter the Food items</a>
+            <a href="{% url 'QualificationTrans' %}" class="nav-item">Qualification for Dietition</a>
+            
+            <a href="{% url 'Logout' %}" class="nav-item">Logout</a>
+
+        </div>
+        
+    </div>
+    
+    <div class="form-container">
+        <div class="add-food-container">
+            <div class="form-header">
+                <h2>New Food Item</h2>
+                <div class="progress-bar">
+                    <div class="progress" id="formProgress"></div>
+                </div>
+            </div>
+        
+            <form class="food-form" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+        
+                <div class="form-cards">
+                    {% for field in form %}
+                    <div class="form-card" data-field="{{ field.name }}">
+                        <div class="field-label">{{ field.label }}</div>
+        
+                        {% if field.name == 'image' %}
+                        <div class="upload-area" id="uploadArea">
+                            {{ field }}
+                            <div class="upload-content">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Drop your image here</p>
+                                <span class="upload-hint">or click to browse</span>
+                                <img id="imagePreview" class="hidden">
+                            </div>
+                        </div>
+        
+                        {% elif field.name == 'serving_unit' %}
+                        <div class="input-wrapper glass-effect">
+                            {{ field }}
+                            <div class="field-icon">
+                                <i class="fas fa-balance-scale"></i>
+                            </div>
+                        </div>
+        
+                        {% elif field.name in 'calories,protein,carbs,fat,serving_size' %}
+                        <div class="input-wrapper glass-effect">
+                            {{ field }}
+                            <div class="field-icon">
+                                {% if field.name == 'calories' %}<i class="fas fa-fire"></i>
+                                {% elif field.name == 'protein' %}<i class="fas fa-dumbbell"></i>
+                                {% elif field.name == 'carbs' %}<i class="fas fa-bread-slice"></i>
+                                {% elif field.name == 'fat' %}<i class="fas fa-oil-can"></i>
+                                {% else %}<i class="fas fa-weight"></i>{% endif %}
+                            </div>
+                            <span class="unit">
+                                {% if field.name == 'calories' %}kcal
+                                {% elif field.name == 'serving_size' %}g
+                                {% else %}g
+                                {% endif %}
+                            </span>
+                        </div>
+        
+                        {% else %}
+                        <div class="input-wrapper glass-effect">
+                            {{ field }}
+                            <div class="field-icon">
+                                <i class="fas fa-utensils"></i>
+                            </div>
+                        </div>
+                        {% endif %}
+        
+                        {% if field.help_text %}
+                        <div class="help-text">{{ field.help_text }}</div>
+                        {% endif %}
+        
+                        {% if field.errors %}
+                        <div class="error-message">{{ field.errors }}</div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+        
+                <div class="form-navigation">
+                    
+                    <button type="submit" class="submit-btn" id="submitBtn">Add Food</button>
+                </div>
+            </form>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const cards = document.querySelectorAll('.form-card');
+                const prevBtn = document.getElementById('prevBtn');
+                const nextBtn = document.getElementById('nextBtn');
+                const submitBtn = document.getElementById('submitBtn');
+                const progressBar = document.getElementById('formProgress');
+                let currentCard = 0;
+        
+                // Initialize
+                function showCard(index) {
+                    cards.forEach(card => card.classList.remove('active'));
+                    cards[index].classList.add('active');
+                    updateButtons();
+                    updateProgress();
+                }
+        
+                function updateButtons() {
+                    prevBtn.style.display = currentCard === 0 ? 'none' : 'block';
+                    nextBtn.style.display = currentCard === cards.length - 1 ? 'none' : 'block';
+                    submitBtn.style.display = currentCard === cards.length - 1 ? 'block' : 'none';
+                }
+        
+                function updateProgress() {
+                    const progress = ((currentCard + 1) / cards.length) * 100;
+                    progressBar.style.width = `${progress}%`;
+                }
+        
+                // Event listeners
+                prevBtn.addEventListener('click', () => {
+                    if (currentCard > 0) {
+                        currentCard--;
+                        showCard(currentCard);
+                    }
+                });
+        
+                nextBtn.addEventListener('click', () => {
+                    if (currentCard < cards.length - 1) {
+                        currentCard++;
+                        showCard(currentCard);
+                    }
+                });
+        
+                // File upload handling
+                const fileInput = document.querySelector('input[type="file"]');
+                const imagePreview = document.getElementById('imagePreview');
+                const uploadContent = document.querySelector('.upload-content');
+        
+                if (fileInput) {
+                    fileInput.addEventListener('change', function (e) {
+                        if (e.target.files.length) {
+                            const file = e.target.files[0];
+                            if (file.type.startsWith('image/')) {
+                                const reader = new FileReader();
+                                reader.onload = (e) => {
+                                    imagePreview.src = e.target.result;
+                                    imagePreview.classList.remove('hidden');
+                                    uploadContent.querySelector('p').textContent = file.name;
+                                    uploadContent.querySelector('i').style.display = 'none';
+                                    uploadContent.querySelector('.upload-hint').style.display = 'none';
+                                };
+                                reader.readAsDataURL(file);
+                            } else {
+                                alert('Please upload an image file');
+                            }
+                        }
+                    });
+                }
+        
+                // Show first card initially
+                showCard(0);
+            });
+        </script>
+    </div>
+  
+</body>
+
+</html>

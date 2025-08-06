@@ -1,0 +1,23 @@
+{% load static %}
+{% include 'header.html' %}
+<style>
+    .center {
+        margin: auto;
+        width: 70%;
+        border: 10px solid green;
+        padding-left: 200px;
+
+    }
+</style>
+<H1>This BMI Chart or BMI Table displays what category each BMI falls under and shows it in Table format.</H1>
+<HR>
+<div class="center">
+    <IMG src="{% static 'assets/img/bmi-chart.png' %}">
+</div>
+<script>
+    document.getElementById('about').classList.remove('active');
+    document.getElementById('home').classList.remove('active');
+    document.getElementById('bmi').classList.add('active');
+    document.getElementById('contact').classList.remove('active');
+</script>
+{% include 'footer.html' %}

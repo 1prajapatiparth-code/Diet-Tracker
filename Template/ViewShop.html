@@ -1,0 +1,264 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop & Area Filter</title>
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #45a049;
+            --accent-color: #2E7D32;
+            
+            --text-color: #2d3436;
+            --light-gray: #dfe6e9;
+            --background-light: #f8f9ff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            min-height: 100vh;
+        }
+
+        .section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .section h2 {
+            margin-bottom: 20px;
+            color: #333;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+
+        .selected-area {
+            background-color: #e8f5e9;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .selected-area h3 {
+            color: #2e7d32;
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+        }
+
+        .food-table {
+            width: 100%;
+
+            border-spacing: 0;
+            margin-top: 30px;
+
+        }
+
+        .food-table th {
+            background: var(--background-light);
+            padding: 15px;
+            font-weight: 600;
+            color: var(--text-color);
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        .food-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--light-gray);
+            vertical-align: middle;
+            text-align: center;
+        }
+        .sidebar {
+            background: linear-gradient(180deg, var(--primary-color), var(--accent-color));
+            color: white;
+            padding: 20px;
+        }
+
+        .user-profile {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #fff;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            color: var(--primary-color);
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+
+            margin-top: 30px;
+        }
+
+        .nav-item {
+            padding: 12px 15px;
+            margin: 5px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #fff;
+            text-decoration: none;
+        }
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="user-profile">
+                <div class="user-avatar">{{ user|slice:":1"|upper }}</div>
+
+                <h3>Welcome, {{user}}</h3>
+            </div>
+            <div class="nav-menu">
+                <a href="{% url 'UserDashboard' %}" class="nav-item">BMI Calculator</a>
+                <a href="{% url 'Bmr' %}" class="nav-item">Diet Plan</a>
+                <a href="{% url 'ViewShop' %}" class="nav-item">View Shops</a>
+                <a href="{% url 'ChangePassword' %}" class="nav-item">Change Password</a>
+                <a href="{% url 'Logout' %}" class="nav-item">Logout</a>
+            </div>
+        </div>
+        <!-- Area Selection Form -->
+        <div class="section">
+            <h2>Select Area</h2>
+            <form method="POST" action="{% url 'FindShop' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="area">Choose Area</label>
+                    <select name="area" id="area" required>
+                        <option value="">Select an area</option>
+                        {% for area in areas %}
+                        <option value="{{ area.id }}">{{ area.AreaName }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="submit-btn">Next</button>
+                </div>
+            </form>
+            
+            <!-- Shop Selection Form (Only shown after area is selected) -->
+            {% if shopdata %}
+            <div class="section">
+                <div class="selected-area">
+                    <h3>Selected Area: {{ area.AreaName }}</h3>
+                </div>
+                
+                <h2>Select Shop</h2>
+                <form method="POST" action="{% url 'ShowShop' %}">
+                    {% csrf_token %}
+                    
+                    <div class="form-group">
+                        <label for="shop">Choose Shop</label>
+                        <select name="shop" id="shop" required>
+                            <option value="">Select a shop</option>
+                            {% for shop in shopdata %}
+                            <option value="{{ shop.id }}">{{ shop.ShopName }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" class="submit-btn">View Shop Details</button>
+                    </div>
+                </form>
+            </div>
+            {% endif %}
+            
+            
+            {% if shopdata %}
+            <table class="food-table">
+                <thead>
+                    <tr>
+                        
+                        <th>Food name</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for food in shopdata %}
+                    <tr class="food-item" data-food-id="{{ food.id }}">
+                        
+                        <td>{{ food.FoodItemName }}</td>
+                        <td>{{ food.Price }}</td>
+                        
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+    </div>
+</body>
+
+</html>

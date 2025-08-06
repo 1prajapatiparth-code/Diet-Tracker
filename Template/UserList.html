@@ -1,0 +1,34 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en"><!-- Basic -->
+<head>
+	{% include 'HEADER.html' %}
+</head>
+
+<body>
+ 	<div class="">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8 ml-auto mr-auto text-center">
+					{% block content%}
+					<table class="table  table-borderless">
+				   <thead class="border-bottom font-weight-bold"><tr><th>Id</th><th>Name</th><th> Gender</th> <th>Emil Id</th> <th>ContactNo</th><th>Age</th> <th>BloodGroup</th> <th><a href="{% url 'UserTrans'  %}" class="btn btn-outline-success"> Add New</a></th></tr> </thead>
+				   <tbody>
+				   {% for list in UserList %}
+				   <Tr><Td>{{list.id}}</Td><Td>{{list.Name}}</Td><Td>{{list.Gender}}</Td><Td>{{list.EmailId}}</Td> <Td>{{list.ContactNo}}</Td> <Td>{{list.Age}}</Td> <Td>{{list.BloodGroup}}</Td> <Td><a href="{% url 'UserTrans' list.id%}" class="btn btn-outline-success">Update</a>  </Td></Tr>
+				   
+				   {% endfor %}
+				   
+				   </tbody>
+				   
+					</table>
+					{% endblock content%}
+										
+				</div>
+			</div>
+		</div>
+	</div>
+ {% include 'Footer.html' %}
+</body>
+</html>

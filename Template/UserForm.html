@@ -1,0 +1,308 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="{% static 'assets/lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2ecc71;
+            --secondary-color: #27ae60;
+            --accent-color: #3498db;
+            --error-color: #e74c3c;
+            --text-color: #2c3e50;
+            --light-gray: #ecf0f1;
+        }
+
+        body {
+            background-image: url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            margin: 0;
+            
+            
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+
+        .form-container {
+            max-width: 600px;
+            width: 95%;
+            margin: 2rem auto;
+            padding: 2.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            animation: formFadeIn 0.5s ease-out;
+        }
+
+        @keyframes formFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-group {
+            margin-bottom: 1.8rem;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-weight: 500;
+            color: var(--text-color);
+            font-size: 0.95rem;
+            transform: translateY(0);
+            transition: all 0.3s ease;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            font-size: 1rem;
+            border: 2px solid var(--light-gray);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(46, 204, 113, 0.15);
+            outline: none;
+        }
+
+        .form-control:hover {
+            border-color: var(--accent-color);
+        }
+
+        /* Enhanced Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Enhanced Input Fields */
+        input[type="date"],
+        input[type="number"] {
+            appearance: none;
+            -webkit-appearance: none;
+            padding: 0.9rem 1.2rem;
+        }
+
+        select.form-control {
+            cursor: pointer;
+            background-image: linear-gradient(45deg, transparent 50%, var(--text-color) 50%),
+                linear-gradient(135deg, var(--text-color) 50%, transparent 50%);
+            background-position: calc(100% - 20px) calc(1em + 2px),
+                calc(100% - 15px) calc(1em + 2px);
+            background-size: 5px 5px,
+                5px 5px;
+            background-repeat: no-repeat;
+            padding-right: 3rem;
+        }
+
+        /* Error States with Animation */
+        .form-control.is-invalid {
+            border-color: var(--error-color);
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-10px);
+            }
+
+            75% {
+                transform: translateX(10px);
+            }
+        }
+
+        .invalid-feedback {
+            color: var(--error-color);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 2rem;
+                margin: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-container {
+                padding: 1.5rem;
+            }
+
+            .form-control {
+                padding: 0.8rem 1rem;
+            }
+
+            .submit-btn {
+                padding: 0.9rem;
+                font-size: 1rem;
+            }
+        }
+
+        /* Field Groups (for radio buttons and checkboxes) */
+        .field-group {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        /* Custom Scrollbar */
+        .form-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .form-container::-webkit-scrollbar-track {
+            background: var(--light-gray);
+            border-radius: 4px;
+        }
+
+        .form-container::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        /* Loading State */
+        .submit-btn.loading {
+            position: relative;
+            color: transparent;
+        }
+
+        .submit-btn.loading::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid #fff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark shadow-sm py-3 py-lg-0 px-3 px-lg-0 ">
+        <a href="#" class="navbar-brand d-block d-lg-none">
+            <h1 class="m-0 text-uppercase text-white"><i class="fa fa-birthday-cake fs-1 text-primary me-3"></i>
+            </h1>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto mx-lg-auto py-0">
+                <a href="{% url 'IndexView' %}" class="nav-item nav-link ">Home</a>
+                <a href="{% url 'AboutUs' %}" class="nav-item nav-link">About Us</a>
+                <a href="{% url 'BmiChart' %}" class="nav-item nav-link">View BMI Chart</a>
+                <a href="{%url 'ContactUs' %}" class="nav-item nav-link">Contact Us</a>
+                <a href="{%url 'UserTrans' %}" class="nav-item nav-link active">New User</a>
+                <a href="{%url 'Login' %}" class="nav-item nav-link ">Login</a>
+
+            </div>
+        </div>
+    </nav>
+<div class="form-container">
+    <form method="POST" action="" autocomplete="off">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="submit-btn">Submit</button>
+    </form>
+    <div class="links">
+        <a href="{%url 'Login' %}">Already Have An Account? Click Here</a>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        // Enhanced mobile datepicker
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "1900:2012",
+            dateFormat: 'yy-mm-dd',
+            showAnim: 'fadeIn',
+            beforeShow: function (input, inst) {
+                // Ensure datepicker is properly positioned on mobile
+                setTimeout(function () {
+                    inst.dpDiv.css({
+                        top: input.offsetTop + input.offsetHeight + 10,
+                        left: '50%',
+                        transform: 'translateX(-50%)'
+                    });
+                }, 0);
+            }
+        });
+
+        // Prevent zoom on iOS
+        document.addEventListener('touchstart', function (event) {
+            if (event.touches.length > 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
+    });
+</script>
+</body>
+{% endblock content %}

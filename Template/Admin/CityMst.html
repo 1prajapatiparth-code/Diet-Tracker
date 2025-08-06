@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+         :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+            margin: 0;
+            width: 100vw;
+            
+        }
+
+        form {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .submit-btn {
+            background-color: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #667eea;
+        }
+
+        /* Style for Django form errors */
+        .errorlist {
+            color: #dc3545;
+            list-style: none;
+            padding: 0;
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        .sidebar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .nav-item {
+            padding: 12px 15px;
+            margin: 5px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s;
+            color: #f0f2f5;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .form-container{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .links{
+            display: flex;
+            flex-direction: column;
+        }
+        .active{
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        a{
+            text-decoration: none;
+            color: #f0f2f5;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <a href="{% url 'AdminDashboard' %}"><h2>Admin Dashboard</h2></a>
+        <div class="links">
+            <a href="{% url 'CityTrans' %} " class="nav-item">Add City</a>
+            <a href="{% url 'AreaTrans' %}" class="nav-item">Add Area</a>
+            <a href="{% url 'FoodItemShopTrans' %}" class="nav-item">Add Food Items For Shop</a>
+            <a href="{% url 'ShopTrans' %}" class="nav-item">Add Shop</a>
+            <a href="{% url 'ItemFrom' %}" class="nav-item">Enter the Food items</a>
+            <a href="{% url 'QualificationTrans' %}" class="nav-item">Qualification for Dietition</a>
+            
+            <a href="{% url 'Logout' %}" class="nav-item">Logout</a>
+
+        </div>
+        
+    </div>
+    
+    <div class="form-container">
+        <form method="POST" action="" autocomplete="off">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit" class="submit-btn">Submit</button>
+            <a href="{% url 'CityList' %}" style="color:red; text-align: center;">View City</a>
+        </form>
+        
+    </div>
+  
+</body>
+
+</html>

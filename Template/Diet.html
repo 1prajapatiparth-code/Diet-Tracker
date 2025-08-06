@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --primary-light: #8f84ea;
+            --primary-dark: #5849e0;
+            --secondary-color: #a8a5e6;
+            --text-color: #2d3436;
+            --light-gray: #dfe6e9;
+            --background-light: #f8f9ff;
+        }
+    
+        .food-list-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+    
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+    
+        .header-section h2 {
+            font-size: 28px;
+            color: var(--text-color);
+            font-weight: 600;
+            margin: 0;
+        }
+    
+        .header-actions {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+    
+        .search-box {
+            position: relative;
+            min-width: 300px;
+        }
+    
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-color);
+        }
+    
+        .search-input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            border: 2px solid var(--light-gray);
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+    
+        .search-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1);
+            outline: none;
+        }
+    
+        .filter-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+    
+        .filter-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+    
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+    
+        .stat-card {
+            background: var(--background-light);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+    
+        .stat-card:hover {
+            border-color: var(--primary-light);
+            transform: translateY(-3px);
+        }
+    
+        .stat-label {
+            color: var(--text-color);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+    
+        .stat-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 4px;
+        }
+    
+        .stat-unit {
+            font-size: 12px;
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+    
+        .food-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 30px;
+        }
+    
+        .food-table th {
+            background: var(--background-light);
+            padding: 15px;
+            font-weight: 600;
+            color: var(--text-color);
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--light-gray);
+        }
+    
+        .food-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--light-gray);
+            vertical-align: middle;
+        }
+    
+        .food-image-container {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    
+        .food-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+    
+        .food-image:hover {
+            transform: scale(1.1);
+        }
+    
+        .nutrient-checkbox {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            border: 2px solid var(--primary-color);
+            border-radius: 6px;
+            appearance: none;
+            -webkit-appearance: none;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+    
+        .nutrient-checkbox:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+    
+        .nutrient-checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            color: white;
+            font-size: 14px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    
+        .nutrient-checkbox:hover {
+            border-color: var(--primary-dark);
+            transform: scale(1.05);
+        }
+    
+        .food-table tbody tr {
+            transition: all 0.3s ease;
+        }
+    
+        .food-table tbody tr:hover {
+            background-color: var(--background-light);
+            transform: translateX(5px);
+        }
+    
+        @media (max-width: 1024px) {
+            .food-list-container {
+                margin: 20px;
+                padding: 20px;
+            }
+    
+            .header-section {
+                flex-direction: column;
+                gap: 20px;
+            }
+    
+            .search-box {
+                min-width: 100%;
+            }
+        }
+    
+        @media (max-width: 768px) {
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+    
+            .food-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    
+        /* Animation for stat cards */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+    
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    
+        .stat-card {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+    
+        .stat-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+    
+        .stat-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+    
+        .stat-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+    
+        .stat-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+        .back-btn{
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    
+<div class="food-list-container">
+    <div class="header-section">
+        <h2>Food Selection</h2>
+        <div class="header-actions">
+            <a href="{% url 'Bmr' %}" class="back-btn"> Go Back</a>
+        </div>
+    </div>
+    <h4>body required calories:{{bmr}}</h4>
+    <h4 id="RC"></h4>
+
+    <div class="stats-bar">
+        <div class="stat-card">
+            <div class="stat-label">Total Calories</div>
+            <div class="stat-value" id="totalCalories"></div>
+            <div class="stat-unit">kcal</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Total Protein</div>
+            <div class="stat-value" id="totalProtein">0</div>
+            <div class="stat-unit">g</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Total Carbs</div>
+            <div class="stat-value" id="totalCarbs">0</div>
+            <div class="stat-unit">g</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Total Fat</div>
+            <div class="stat-value" id="totalFat">0</div>
+            <div class="stat-unit">g</div>
+        </div>
+    </div>
+
+    <table class="food-table">
+        <thead>
+            <tr>
+                <th>Photo</th>
+                <th>Food name</th>
+                <th>
+                    <div class="nutrient-header">
+                        <span>Calories</span>
+                        <input type="checkbox" id="selectAllCalories" class="nutrient-checkbox">
+                    </div>
+                </th>
+                <th>
+                    <div class="nutrient-header">
+                        <span>Protein</span>
+                        <input type="checkbox" id="selectAllProtein" class="nutrient-checkbox">
+                    </div>
+                </th>
+                <th>
+                    <div class="nutrient-header">
+                        <span>Carbs</span>
+                        <input type="checkbox" id="selectAllCarbs" class="nutrient-checkbox">
+                    </div>
+                </th>
+                <th>
+                    <div class="nutrient-header">
+                        <span>Fat</span>
+                        <input type="checkbox" id="selectAllFat" class="nutrient-checkbox">
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for food in fooddata %}
+            <tr class="food-item" data-food-id="{{ food.id }}">
+                <td>
+                    <div class="food-image-container">
+                        <img src="{{ food.Img.url }}" alt="{{ food.name }}" class="food-image">
+                    </div>
+                </td>
+                <td>{{ food.Name }}</td>
+                <td>
+                    <div class="nutrient-cell">
+                        <span>{{food.Calories}} kcal</span>
+                        <input type="checkbox" class="nutrient-checkbox calories-check" data-value="{{ food.Calories }}"
+                            data-type="calories">
+                    </div>
+                </td>
+                <td>
+                    <div class="nutrient-cell">
+                        <span>{{ food.Protein }}g</span>
+                        <input type="checkbox" class="nutrient-checkbox protein-check" data-value="{{ food.Protein }}"
+                            data-type="protein">
+                    </div>
+                </td>
+                <td>
+                    <div class="nutrient-cell">
+                        <span>{{ food.Carbs }}g</span>
+                        <input type="checkbox" class="nutrient-checkbox carbs-check" data-value="{{ food.Carbs }}"
+                            data-type="carbs">
+                    </div>
+                </td>
+                <td>
+                    <div class="nutrient-cell">
+                        <span>{{ food.Fat }}g</span>
+                        <input type="checkbox" class="nutrient-checkbox fat-check" data-value="{{ food.Fat }}"
+                            data-type="fat">
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkboxes = document.querySelectorAll('.nutrient-checkbox');
+        const selectAllCalories = document.getElementById('selectAllCalories');
+        const selectAllProtein = document.getElementById('selectAllProtein');
+        const selectAllCarbs = document.getElementById('selectAllCarbs');
+        const selectAllFat = document.getElementById('selectAllFat');
+
+        // Update totals when any checkbox is clicked
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateTotals);
+        });
+
+        // Select all functionality for each nutrient
+        selectAllCalories.addEventListener('change', function () {
+            document.querySelectorAll('.calories-check').forEach(cb => {
+                cb.checked = this.checked;
+            });
+            updateTotals();
+        });
+
+        selectAllProtein.addEventListener('change', function () {
+            document.querySelectorAll('.protein-check').forEach(cb => {
+                cb.checked = this.checked;
+            });
+            updateTotals();
+        });
+
+        selectAllCarbs.addEventListener('change', function () {
+            document.querySelectorAll('.carbs-check').forEach(cb => {
+                cb.checked = this.checked;
+            });
+            updateTotals();
+        });
+
+        selectAllFat.addEventListener('change', function () {
+            document.querySelectorAll('.fat-check').forEach(cb => {
+                cb.checked = this.checked;
+            });
+            updateTotals();
+        });
+
+        function updateTotals() {
+            let totalCalories = 0;
+            let totalProtein = 0;
+            let totalCarbs = 0;
+            let totalFat = 0;
+            let RC = "{{bmr|escapejs}}";
+            document.querySelectorAll('.nutrient-checkbox:checked').forEach(checkbox => {
+                const value = parseFloat(checkbox.dataset.value);
+                const type = checkbox.dataset.type;
+
+                switch (type) {
+                    case 'calories':
+                        totalCalories += value;
+                        RC = RC - totalCalories;
+
+                        break;
+                    case 'protein':
+                        totalProtein += value;
+                        break;
+                    case 'carbs':
+                        totalCarbs += value;
+                        break;
+                    case 'fat':
+                        totalFat += value;
+                        break;
+                }
+
+            });
+
+            document.getElementById('totalCalories').textContent = totalCalories.toFixed(1);
+            document.getElementById('totalProtein').textContent = totalProtein.toFixed(1);
+            document.getElementById('totalCarbs').textContent = totalCarbs.toFixed(1);
+            document.getElementById('totalFat').textContent = totalFat.toFixed(1);
+            document.getElementById('RC').innerHTML = "Remaining Calories" + RC;
+        }
+    });
+</script>
+</body>
+</html>
+
+
+
+
